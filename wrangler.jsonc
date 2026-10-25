@@ -1,0 +1,8 @@
+{
+  // Tells Cloudflare to publish everything in the "web" folder as the website.
+  "name": "zaptats",
+  "compatibility_date": "2026-10-25",
+  "assets": {
+    "directory": "./web"
+  }
+}
