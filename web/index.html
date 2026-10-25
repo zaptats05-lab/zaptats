@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ZAP TATS | Request a tattoo</title>
+  <meta name="description" content="Send a photo of the tattoo you want, where you want it, and about how big. Zap Tats will reply with a quote.">
+  <meta name="theme-color" content="#121016">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <a class="wordmark" href="https://www.zaptats.net">ZAP TATS</a>
+      <h1 id="page-title">Request a tattoo</h1>
+      <p class="lede">Send a photo of what you want, where you want it, and about how big. I'll look it over and reply with a quote.</p>
+    </header>
+
+    <form id="request-form" novalidate autocomplete="on" aria-labelledby="page-title">
+      <div id="form-alert" class="alert" role="alert" hidden></div>
+
+      <!-- Spam trap: real people never see or fill this in. -->
+      <div class="trap" aria-hidden="true">
+        <label>Leave this empty <input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+
+      <fieldset>
+        <legend>About you</legend>
+
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" autocomplete="name" maxlength="100">
+          <p class="error" id="err-name" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30">
+          <p class="error" id="err-phone" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="200">
+          <p class="error" id="err-email" hidden></p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>The tattoo</legend>
+
+        <div class="field" id="photo-block">
+          <span class="label" id="photos-label">Photos of what you want</span>
+          <p class="hint" id="photos-hint">Up to 5 photos. Screenshots are fine.</p>
+          <label class="drop" for="photos">
+            <input class="sr" id="photos" name="photos" type="file" accept="image/*" multiple aria-labelledby="photos-label" aria-describedby="photos-hint err-photos">
+            <strong>Add photos</strong>
+            <span>Tap to choose from your camera roll</span>
+          </label>
+          <ul class="thumbs" id="thumbs" aria-label="Chosen photos"></ul>
+          <p class="error" id="err-photos" hidden></p>
+        </div>
+
+        <label class="check" for="nopic">
+          <input type="checkbox" id="nopic" name="nopic">
+          <span>I don't have a picture</span>
+        </label>
+
+        <div id="describe-block" hidden>
+          <div class="field">
+            <label for="description">Describe what you want</label>
+            <textarea id="description" name="description" rows="5" maxlength="2000"></textarea>
+            <p class="error" id="err-description" hidden></p>
+          </div>
+          <div class="field">
+            <label for="style">Style <span class="optional">(optional)</span></label>
+            <select id="style" name="style">
+              <option value="">Not sure</option>
+              <option>Black and grey</option>
+              <option>Color</option>
+              <option>Realism</option>
+              <option>Traditional</option>
+              <option>Lettering</option>
+              <option>Fine line</option>
+              <option>Cover-up</option>
+              <option>Something else</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="placement">Where on your body?</label>
+          <input id="placement" name="placement" type="text" list="placement-options" maxlength="200" autocomplete="off">
+          <datalist id="placement-options">
+            <option value="Forearm"></option>
+            <option value="Upper arm"></option>
+            <option value="Shoulder"></option>
+            <option value="Chest"></option>
+            <option value="Back"></option>
+            <option value="Ribs"></option>
+            <option value="Thigh"></option>
+            <option value="Calf"></option>
+            <option value="Ankle"></option>
+            <option value="Hand"></option>
+            <option value="Neck"></option>
+          </datalist>
+          <p class="error" id="err-placement" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="size">About how big?</label>
+          <input id="size" name="size" type="text" list="size-options" maxlength="200" autocomplete="off">
+          <datalist id="size-options">
+            <option value="Coin-sized"></option>
+            <option value="Palm-sized"></option>
+            <option value="Hand-sized"></option>
+            <option value="Forearm-sized"></option>
+            <option value="Half sleeve"></option>
+            <option value="Full sleeve"></option>
+          </datalist>
+          <p class="hint hint-after">A size like "palm-sized" or "4 inches" works.</p>
+          <p class="error" id="err-size" hidden></p>
+        </div>
+      </fieldset>
+
+      <fieldset id="age-fieldset" aria-describedby="err-adult">
+        <legend>Your age</legend>
+
+        <div class="field">
+          <span class="label" id="adult-label">Are you 18 or older?</span>
+          <div class="choices" role="radiogroup" aria-labelledby="adult-label">
+            <label class="choice"><input type="radio" name="adult" id="adult-yes" value="yes"><span>Yes</span></label>
+            <label class="choice"><input type="radio" name="adult" id="adult-no" value="no"><span>No</span></label>
+          </div>
+          <p class="error" id="err-adult" hidden></p>
+        </div>
+
+        <div id="minor-block" hidden>
+          <p class="notice">Anyone under 18 needs a parent or legal guardian to come to the appointment, bring their photo ID, and sign the consent form in person. Please also bring your birth certificate.</p>
+
+          <div class="field">
+            <label for="minor-age">How old are you?</label>
+            <input id="minor-age" name="minor-age" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off">
+            <p class="error" id="err-minor-age" hidden></p>
+          </div>
+          <div class="field">
+            <label for="parent-name">Parent or guardian's name</label>
+            <input id="parent-name" name="parent-name" type="text" maxlength="100" autocomplete="off">
+            <p class="error" id="err-parent-name" hidden></p>
+          </div>
+          <div class="field">
+            <label for="parent-phone">Parent or guardian's phone</label>
+            <input id="parent-phone" name="parent-phone" type="tel" inputmode="tel" maxlength="30" autocomplete="off">
+            <p class="error" id="err-parent-phone" hidden></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <button class="send" id="send" type="submit">Send request</button>
+      <p class="fineprint">Questions? Call or text (573) 337-0502.</p>
+    </form>
+
+    <section class="done" id="done" hidden aria-labelledby="done-title">
+      <h2 id="done-title" tabindex="-1">Request sent</h2>
+      <p id="done-text"></p>
+      <button class="again" id="again" type="button">Send another request</button>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+/* Zap Tats — request form
+   Ink-violet black, bone text, one accent: stencil violet (the color of tattoo transfer paper). */
+
+:root {
+  color-scheme: dark;
+  --ink: #121016;
+  --sheet: #1a1720;
+  --line: #2c2834;
+  --bone: #ece6d9;
+  --muted: #a29cae;
+  --stencil: #a78bfa;
+  --stencil-dim: rgba(167, 139, 250, 0.14);
+  --danger: #f4a3a3;
+  --display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --body: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font: 400 1rem/1.55 var(--body);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.page { max-width: 34rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+/* ---- masthead ---- */
+.wordmark {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.2em;
+  color: var(--bone);
+  text-decoration: none;
+}
+.wordmark:hover { color: var(--stencil); }
+
+h1 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 11vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  margin: 3rem 0 1rem;
+}
+.lede { color: var(--muted); max-width: 30rem; margin: 0; }
+
+/* ---- sections ---- */
+fieldset { border: 0; padding: 0; margin: 2.75rem 0 0; min-width: 0; }
+legend {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+
+.field { margin-top: 1.25rem; }
+label, .label { display: block; font-weight: 500; margin-bottom: 0.4rem; }
+.optional { color: var(--muted); font-weight: 400; }
+.hint { color: var(--muted); font-size: 0.9rem; margin: -0.15rem 0 0.6rem; }
+.hint-after { margin: 0.4rem 0 0; }
+
+input[type="text"], input[type="tel"], input[type="email"], textarea, select {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--sheet);
+  color: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 1rem; /* 16px minimum so iPhones do not zoom in on focus */
+}
+textarea { min-height: 7.5rem; resize: vertical; }
+
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--stencil);
+  outline-offset: 2px;
+  border-color: var(--stencil);
+}
+input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--danger); }
+
+.error { color: var(--danger); font-size: 0.9rem; margin: 0.45rem 0 0; }
+
+/* ---- the stencil sheet (photo upload) ---- */
+.drop {
+  --m: 1rem;
+  --t: 1.5px;
+  --c: var(--stencil);
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.2rem;
+  min-height: 9.5rem;
+  padding: 1.5rem 1rem;
+  margin: 0;
+  text-align: center;
+  font-weight: 400;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.drop::before {
+  content: "";
+  position: absolute;
+  inset: 0.6rem;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--m) var(--t),
+    linear-gradient(var(--c), var(--c)) top left / var(--t) var(--m),
+    linear-gradient(var(--c), var(--c)) top right / var(--m) var(--t),
+    linear-gradient(var(--c), var(--c)) top right / var(--t) var(--m),
+    linear-gradient(var(--c), var(--c)) bottom left / var(--m) var(--t),
+    linear-gradient(var(--c), var(--c)) bottom left / var(--t) var(--m),
+    linear-gradient(var(--c), var(--c)) bottom right / var(--m) var(--t),
+    linear-gradient(var(--c), var(--c)) bottom right / var(--t) var(--m);
+  background-repeat: no-repeat;
+}
+.drop strong { font-family: var(--display); font-weight: 500; font-size: 1.4rem; }
+.drop span { color: var(--muted); font-size: 0.9rem; }
+.drop:hover { border-color: var(--stencil); }
+.drop:focus-within { outline: 2px solid var(--stencil); outline-offset: 2px; }
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.thumbs { list-style: none; padding: 0; margin: 0.9rem 0 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.thumbs li { position: relative; width: 4.5rem; height: 4.5rem; }
+.thumbs img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+.thumbs .remove {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--bone);
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  font: 600 1rem/1 var(--body);
+  cursor: pointer;
+}
+.thumbs .remove::after { content: ""; position: absolute; inset: -0.5rem; } /* bigger tap area */
+.thumbs .remove:focus-visible { outline: 2px solid var(--stencil); outline-offset: 2px; }
+
+/* ---- checkbox ---- */
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  margin: 0.9rem 0 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+.check input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  display: grid;
+  place-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  border: 1.5px solid var(--muted);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+}
+.check input:checked { background: var(--stencil); border-color: var(--stencil); }
+.check input:checked::after {
+  content: "";
+  width: 0.4rem;
+  height: 0.75rem;
+  border: solid var(--ink);
+  border-width: 0 2px 2px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+.check input:focus-visible { outline: 2px solid var(--stencil); outline-offset: 3px; }
+
+/* ---- yes / no ---- */
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.choice { position: relative; margin: 0; font-weight: 500; }
+.choice input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.choice span {
+  display: grid;
+  place-items: center;
+  min-height: 3.25rem;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.choice input:checked + span { border-color: var(--stencil); background: var(--stencil-dim); }
+.choice input:focus-visible + span { outline: 2px solid var(--stencil); outline-offset: 2px; }
+
+.notice {
+  margin: 1.25rem 0 0;
+  padding: 0.2rem 0 0.2rem 1rem;
+  border-left: 2px solid var(--stencil);
+}
+
+/* ---- send ---- */
+.send {
+  display: block;
+  width: 100%;
+  min-height: 3.5rem;
+  margin-top: 2.75rem;
+  background: var(--bone);
+  color: var(--ink);
+  border: 0;
+  border-radius: 2px;
+  font: 600 1.0625rem var(--body);
+  cursor: pointer;
+}
+.send:hover { background: #fff; }
+.send:focus-visible { outline: 2px solid var(--stencil); outline-offset: 3px; }
+.send:disabled { opacity: 0.6; cursor: progress; }
+
+.fineprint { color: var(--muted); font-size: 0.9rem; margin: 1rem 0 0; }
+
+.alert {
+  margin: 1.75rem 0 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--danger);
+  border-radius: 6px;
+  color: var(--danger);
+}
+
+/* ---- done ---- */
+.done { margin-top: 3rem; animation: show 0.3s ease-out both; }
+.done h2 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 9vw, 3rem);
+  line-height: 1.05;
+  margin: 0 0 1rem;
+}
+.done h2:focus { outline: none; }
+.done p { color: var(--muted); margin: 0; max-width: 30rem; }
+.again {
+  margin-top: 2rem;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  background: transparent;
+  color: var(--bone);
+  border: 1px solid var(--muted);
+  border-radius: 2px;
+  font: 500 1rem var(--body);
+  cursor: pointer;
+}
+.again:hover { border-color: var(--stencil); }
+.again:focus-visible { outline: 2px solid var(--stencil); outline-offset: 3px; }
+
+/* spam trap: off-screen, not display:none, so simple bots still fill it */
+.trap { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+
+@keyframes show { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
